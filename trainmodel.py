@@ -6,16 +6,20 @@ import sys
 
 BATCH_SIZE = 16
 
+# ConvNet Following this Guide: https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html
+
 def generator_from_dir(image_generator, directory):
-        data_generator = image_generator.flow_from_directory(
-            directory,
-            target_size=(150,150),
-            batch_size=BATCH_SIZE,
-            class_mode='binary',
-        )
-        return data_generator
+    """Creates a Keras generator to load image data from a directory"""
+    data_generator = image_generator.flow_from_directory(
+        directory,
+        target_size=(150,150),
+        batch_size=BATCH_SIZE,
+        class_mode='binary',
+    )
+    return data_generator
 
 def compile_convnet_model(input_shape):
+    """Defines the convolutional neural network model"""
     model = Sequential()
     model.add(Conv2D(32, (3, 3), input_shape=input_shape))
     model.add(Activation('relu'))
@@ -45,6 +49,7 @@ def compile_convnet_model(input_shape):
     return model
 
 def train_convnet_model(training_dir, validation_dir, output_file):
+    """Trains a convolutional neural network from the given input files"""
     image_generator = ImageDataGenerator(
         rotation_range=40,
         width_shift_range=0.2,
@@ -77,14 +82,19 @@ def train_convnet_model(training_dir, validation_dir, output_file):
 
 def main():
     try:
-        training_dir = sys.argv[1]
-        validation_dir = sys.argv[2]
-        output = sys.argv[3]
+        training_type = sys.argv[1]
+        training_dir = sys.argv[2]
+        validation_dir = sys.argv[3]
+        output = sys.argv[4]
     except:
         print("Missing argument")
         return
 
-    train_convnet_model(training_dir, validation_dir, output)
+    if training_type == 'convnet':
+        train_convnet_model(training_dir, validation_dir, output)
+    else:
+        print("Invalid training type")
+        return
 
 if __name__ == "__main__":
     main()
