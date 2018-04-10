@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
 
-void main() => runApp(new MyApp());
+void main() {
+  runApp(new MaterialApp(
+    title: 'courtfinder',
+    home: new HomeScreen(),
+  ));
+}
 
-class MyApp extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final wordPair = new WordPair.random();
     return new MaterialApp(
       title: 'courtfinder',
       home: new Scaffold(
@@ -22,7 +25,15 @@ class MyApp extends StatelessWidget {
               ),
             ),
             new Center(
-              child: new Text("Hello background"),
+              child: new RaisedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(builder: (context) => new LocationScreen()),
+                  );
+                },
+                child: new Text('Find courts near you.'),
+              ),
             )
           ],
         )
@@ -31,10 +42,29 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class RandomWords extends StatefulWidget {
+class LocationScreen extends StatelessWidget {
   @override
-  createState() => new RandomWordsState();
-}
-
-class RandomWordsState extends State<RandomWords> {
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: new ListView(
+        children: [
+          new Image.asset(
+            'assets/newyork.jpg',
+            height: 240.0,
+            fit: BoxFit.cover,
+          ),
+          new Image.asset(
+            'assets/losangeles.jpg',
+            height: 240.0,
+            fit: BoxFit.cover,
+          ),
+          new Image.asset(
+            'assets/chicago.jpg',
+            height: 240.0,
+            fit: BoxFit.cover,
+          ),                    
+        ],
+      )
+    );
+  }
 }
