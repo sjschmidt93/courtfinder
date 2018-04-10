@@ -21,18 +21,32 @@ class HomeScreen extends StatelessWidget {
           children: <Widget>[
             new Container(
               decoration: new BoxDecoration(
-                image: new DecorationImage(image: new AssetImage("assets/court.png"), fit: BoxFit.cover,),
+                image: new DecorationImage(image: new AssetImage("images/court.png"), fit: BoxFit.cover,),
               ),
             ),
             new Center(
-              child: new RaisedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    new MaterialPageRoute(builder: (context) => new LocationScreen()),
-                  );
-                },
-                child: new Text('Find courts near you.'),
+              child: new Column (
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  new RaisedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(builder: (context) => new LocationScreen()),
+                      );
+                    },
+                    child: new Text('Pick your location'),
+                  ),
+                  new RaisedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(builder: (context) => new CourtScreen()),
+                      );
+                    },
+                    child: new Text('Find courts'),
+                  )
+                ]
               ),
             )
           ],
@@ -49,17 +63,17 @@ class LocationScreen extends StatelessWidget {
       body: new ListView(
         children: [
           new Image.asset(
-            'assets/newyork.jpg',
+            'images/newyork.jpg',
             height: 240.0,
             fit: BoxFit.cover,
           ),
           new Image.asset(
-            'assets/losangeles.jpg',
+            'images/losangeles.jpg',
             height: 240.0,
             fit: BoxFit.cover,
           ),
           new Image.asset(
-            'assets/chicago.jpg',
+            'images/chicago.jpg',
             height: 240.0,
             fit: BoxFit.cover,
           ),                    
@@ -68,3 +82,63 @@ class LocationScreen extends StatelessWidget {
     );
   }
 }
+
+class CourtScreen extends StatelessWidget {
+
+  // returns the display for a court with all the associated information, hardcoded to rucker park for now
+  _getCourtDisplay() { 
+    return new Container(
+      decoration: new BoxDecoration(
+        color: Colors.blue[300],
+        borderRadius: new BorderRadius.all(
+          const Radius.circular(8.0),
+        ), 
+      ),
+      padding: new EdgeInsets.all(20.0),
+      child: new Row(
+        children: [ 
+          new Expanded( 
+            child: new Image.asset('images/ruckerpark.jpg'), 
+          ),
+          new Expanded( 
+            child: new Column(
+              children: [
+                new ListTile(
+                  leading: new Icon(Icons.map),
+                  title: new Text('Rucker Park'),
+                ),
+                new ListTile(
+                  leading: new Icon(Icons.place),
+                  title: new Text('0.8 miles away'),
+                ),
+                new ListTile(
+                  leading: new Icon(Icons.panorama_fish_eye),
+                  title: new Text('Full-court'),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) { 
+    return new Scaffold(
+      body: new ListView(
+        children: [ 
+          new Text(
+            "Courts near you \n",
+            textAlign: TextAlign.center,
+            style: new TextStyle(
+              fontFamily: 'Helvetica', 
+              fontWeight: FontWeight.bold)
+            ),
+          _getCourtDisplay(),
+        ]
+      )
+    );
+  }
+}
+
