@@ -8,14 +8,18 @@ name = "pypi"
 [packages]
 
 google-images-download = "*"
-gdal = "*"
 pillow = "*"
 matplotlib = "*"
 numpy = "*"
+tensorflow = "*"
+keras = "*"
+"h5py" = "*"
 
 
 [dev-packages]
 
+pylint = "*"
+rope = "*"
 
 
 [requires]
