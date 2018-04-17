@@ -24,31 +24,58 @@ class HomeScreen extends StatelessWidget {
                 image: new DecorationImage(image: new AssetImage("images/court.png"), fit: BoxFit.cover,),
               ),
             ),
-            new Center(
-              child: new Column (
-                mainAxisAlignment: MainAxisAlignment.center,
+            new Column (
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  new RaisedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        new MaterialPageRoute(builder: (context) => new LocationScreen()),
-                      );
-                    },
-                    child: new Text('Pick your location'),
+                  new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      new RaisedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            new MaterialPageRoute(builder: (context) => new LocationScreen()),
+                          );
+                        },
+                        child: new Text('Pick your location'),
+                      ),  
+                      new RaisedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            new MaterialPageRoute(builder: (context) => new CourtScreen()),
+                          );
+                        },
+                        child: new Text('Find courts'),
+                      )
+                    ]
                   ),
-                  new RaisedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        new MaterialPageRoute(builder: (context) => new CourtScreen()),
-                      );
-                    },
-                    child: new Text('Find courts'),
+                  new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      new RaisedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            new MaterialPageRoute(builder: (context) => new LocationScreen()),
+                          );
+                        },
+                        child: new Text('Login'),
+                      ),  
+                      new RaisedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            new MaterialPageRoute(builder: (context) => new LocationScreen()),
+                          );
+                        },
+                        child: new Text('Settings'),
+                      ),  
+                    ]
                   )
                 ]
               ),
-            )
+
           ],
         )
       ),
