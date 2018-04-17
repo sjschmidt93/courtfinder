@@ -8,27 +8,37 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "build": "babel src -d ./"
+    "build": "babel src -d ./",
+    "test": "mocha --reporter spec --require babel-core/register"
   },
   "dependencies": {
+    "firebase": "^4.12.1",
     "firebase-admin": "~5.12.0",
     "firebase-functions": "^1.0.1",
-    "geofire": "^4.1.2"
+    "npm": "^5.8.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "chai": "^4.1.2",
     "eslint": "^4.12.0",
-    "eslint-plugin-promise": "^3.6.0"
+    "eslint-plugin-promise": "^3.6.0",
+    "firebase-functions-test": "^0.1.1",
+    "mocha": "^5.1.0",
+    "sinon": "^4.5.0"
   },
   "private": true,
   "babel": {
     "presets": [
-      ["env", {
-        "targets": {
-          "node": "6.11.5"
+      [
+        "env",
+        {
+          "targets": {
+            "node": "6.11.5"
+          }
         }
-      }]
+      ]
     ]
   }
 }

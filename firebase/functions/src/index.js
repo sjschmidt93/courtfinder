@@ -1,67 +1,30 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import * as geofire from "geofire";
+import {helpers} from "./helpers.js";
 
 admin.initializeApp()
 
 // Callable Function:
 export const getNearbyCourts = functions.https.onCall((data, context) => {
-    const {latitude, longitude} = data.location;
-    const courts = admin.firestore().collection('courts');    
-    const ref = admin.database().ref('courts')
-    const geoFire = new geofire(ref);
-    const query = geoFire.query({
-        center: [latitude, longitude],
-        radius: 0.5
-    });
-    const keys = [];
-    query.on('key_entered', (key, location, distance) => {
-        keys.push(key)
-    });
-    return new Promise((resolve) => {
-        query.on('ready', () => {
-            resolve(keys);
-        });
-    }).then((keys) => {
-        return getDataForKeys(courts, keys);
-    });
+    return helpers.getNearbyCourts(data);
 });
 
 export const scheduleGame = functions.https.onCall((data, context) => {
-    const uid = context.auth.uid;
-    return {};
+    return helpers.scheduleGame(data, context);
 });
 
 export const addUserGame = functions.https.onCall((data, context) => {
-    const uid = context.auth.uid;
-    return true;
+    return helpers.addUserGame(data, context);
 });
 
 export const removeUserGame = functions.https.onCall((data, context) => {
-    const uid = context.auth.uid;
-    return true;
+    return helpers.removeUserGame(data, context);
 });
 
 export const getGameInfo = functions.https.onCall((data, context) => {
-    return {};
+    return helpers.getGameInfo(data);
 });
 
-
-// Cloud Firestore Events
-export const addToGeoFire = functions.firestore.document('courts/{id}').onCreate((snap, context) => {
-    const id = snap.ref.id;
-    const data = snap.data()
-    const ref = admin.database().ref('courts')
-    const geoFire = new geofire(ref);
-    return geoFire.set(id, [data.latitude, data.longitude]);
+export const addCourt = functions.https.onCall((data) => {
+    return helpers.addCourt(data);
 });
-
-
-// Helper Functions
-async function getDataForKeys(collection, keyList) {
-    results = [];
-    results = await Promise.all(keyList.map(async (key) => {
-        return await collection.doc(key);
-    }))
-    return results;
-}
