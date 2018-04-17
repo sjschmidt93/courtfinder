@@ -35,40 +35,39 @@ export const helpers = (function() {
         return gameData.data();
     };
 
-    const scheduleGame = async function(data, context) {
-        const uid = context.auth.uid;
+    const scheduleGame = async function(data, uid) {
         const docData = {
             court: data.court,
             creator: uid,
             participants: {},
             time: new Date(data.time)
         };
-        const gameRef = admin.firestore.collection('games').doc();
+        const gameRef = admin.firestore().collection('games').doc();
         return gameRef.set(docData);
     };
 
-    const addUserGame = async function(data, context) {
-        const uid = data.user || context.auth.uid;
-        const gameRef = admin.firestore.collection('games').doc(data.id);
-        participantsData = {};
-        participantsData[uid] = true;
+    const addUserGame = async function(data, uid) {
+        const userId = data.user || uid;
+        const gameRef = admin.firestore().collection('games').doc(data.id);
+        const participantsData = {};
+        participantsData[userId] = true;
         return gameRef.set({
             participants: participantsData, 
         }, {merge: true});
     };
 
-    const removeUserGame = async function(data, context) {
-        const uid = data.user || context.auth.uid;
-        const gameRef = admin.firestore.collection('games').doc(data.id);
-        participantsData = {};
-        participantsData[uid] = false;
+    const removeUserGame = async function(data, uid) {
+        const userId = data.user || uid;
+        const gameRef = admin.firestore().collection('games').doc(data.id);
+        const participantsData = {};
+        participantsData[userId] = false;
         return gameRef.update({
             participants: participantsData,
         });
     };
 
     const addCourt = async function(data) {
-        const courtRef = admin.firestore.collection('courts').doc();
+        const courtRef = admin.firestore().collection('courts').doc();
         return courtRef.set(data);
     }
 

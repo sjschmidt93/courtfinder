@@ -1,4 +1,3 @@
-// import * as FirebaseTest from "firebase-functions-test";
 const FirebaseTest = require('firebase-functions-test');
 import * as firebase from "firebase";
 import * as chai from "chai";
@@ -48,7 +47,6 @@ describe('Cloud Functions', () => {
             }
 
             return helpers.getNearbyCourts(query).then((result) => {
-                console.log(result);
                 assert.deepInclude(result, data);
                 return;
             });
@@ -56,26 +54,114 @@ describe('Cloud Functions', () => {
     });
     
     describe('ScheduleGame', () => {
-        it('should add a game to the games collection', () => {
-
+        const ids = [];
+        it('should add a game to the games collection', async () => {
+            const query = {
+                court: "somecourt"
+            }
+            const writeResult = await helpers.scheduleGame(query, "someuser");
+            const ref = admin.firestore().collection('games').where('court', '==', 'somecourt');
+            const result = await ref.get();
+            assert.isAbove(result.size, 0);
+            result.forEach((doc) => {
+                ids.push(doc.id);
+                const data = doc.data();
+                assert.equal(data.creator, "someuser");
+            });
+        });
+        after(async () => {
+            return Promise.all(ids.map((id) => {
+                const item = admin.firestore().collection('games').doc(id);
+                return item.delete();
+            }));
         });
     });
 
     describe('AddUserGame', () => {
-        it('should a user as a game participant', () => {
-
+        let gameRef;
+        const data = {
+            court: "courtid",
+            creator: "creatorid",
+            participants: {
+                p1: true,
+                p2: true,
+            },
+            time: Date.now(),
+        }
+        before(() => {
+            gameRef = admin.firestore().collection('games').doc();
+            return gameRef.set(data);
+        });
+        after(() => {
+            return gameRef.delete();
+        });
+        it('should add a user as a game participant', async () => {
+            const query = {
+                id: gameRef.id,
+                user: "userid",
+            }
+            const result = await helpers.addUserGame(query);
+            const doc = await gameRef.get();
+            const data = doc.data();
+            assert.isTrue(data.participants["userid"]);
         });
     });
 
     describe('RemoveUserGame', () => {
-        it('should remove a user as a game participant', () => {
-
+        let gameRef;
+        const data = {
+            court: "courtid",
+            creator: "creatorid",
+            participants: {
+                p1: true,
+                p2: true,
+                userid: true,
+            },
+            time: Date.now(),
+        }
+        before(() => {
+            gameRef = admin.firestore().collection('games').doc();
+            return gameRef.set(data);
+        });
+        after(() => {
+            return gameRef.delete();
+        });
+        it('should remove a user as a game participant', async () => {
+            const query = {
+                id: gameRef.id,
+                user: "userid",
+            }
+            const queryResult = await helpers.removeUserGame(query);
+            const doc = await gameRef.get();
+            const result = doc.data();
+            assert.isFalse(result.participants["userid"]);
         });
     });
 
     describe('AddCourt', () => {
-        it('should add a court to the courts collection', () => {
-
+        const ids = [];
+        it('should add a court to the courts collection', async () => {
+            const query = {
+                name: "New Court",
+                latitude: 0,
+                longitude: 0,
+                region: "test",
+            }
+            const writeResult = await helpers.addCourt(query);
+            const ref = admin.firestore().collection('courts').where('name', '==', "New Court");
+            const result = await ref.get();
+            assert.isAbove(result.size, 0);
+            result.forEach((doc) => {
+                ids.push(doc.id);
+                assert.deepEqual(doc.data(), query);
+            });
+            return;
+        });
+        after(() => {
+            return Promise.all(ids.map((id) => {
+                const item = admin.firestore().collection('courts').doc(id);
+                return item.delete();
+            }));
         });
     });
 
@@ -100,7 +186,6 @@ describe('Cloud Functions', () => {
                 id: doc.id
             }
             return helpers.getGameInfo(query).then((result) => {
-                console.log(result);
                 assert.deepEqual(result, data);
                 return;
             })
