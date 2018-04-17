@@ -34,6 +34,12 @@ flutter:
   - images/basketball_icon.png
   - images/venicebeach.jpg
   - images/lincolnpark.jpg
+  - images/manhattan.jpg
+  - images/brooklyn.jpg
+  - images/bronx.jpg
+  - images/queens.jpg
+  - images/statenisland.jpg
+  
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
