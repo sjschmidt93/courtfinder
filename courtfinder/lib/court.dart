@@ -5,12 +5,13 @@ class Court {
   String courtName;
   bool courtType; // 1 = full-court, 0 = half-court
   double distance;
-
   Court(this.imageName, this.courtName, this.courtType, this.distance) ;
 }
 
 class CourtScreen extends StatelessWidget {
 
+  String location;
+  int results;
   bool colorFlag = true;
 
   // returns the display for a court with all the associated information
@@ -54,20 +55,26 @@ class CourtScreen extends StatelessWidget {
     );
   }
 
+  CourtScreen(String location, int results) { 
+    this.location = location;
+    this.results = results;
+  }
+
   @override
   Widget build(BuildContext context) { 
     return new Scaffold(
       body: new ListView(
         children: [ 
           new Text(
-            "Courts near you \n",
+            this.results.toString() + " courts found in " + this.location + "\n",
             textAlign: TextAlign.center,
             style: new TextStyle(
               fontFamily: 'Helvetica', 
               fontWeight: FontWeight.bold)
             ),
           _getCourtDisplay(new Court('images/ruckerpark.jpg', 'Rucker Park', true, 0.8)),
-          _getCourtDisplay(new Court('images/venicebeach.jpg', 'Venice Beach', true, 2108.9))
+          _getCourtDisplay(new Court('images/venicebeach.jpg', 'Venice Beach', true, 2108.9)),
+          _getCourtDisplay(new Court('images/lincolnpark.jpg', 'Lincoln Park', true, 1037.1))
         ]
       )
     );

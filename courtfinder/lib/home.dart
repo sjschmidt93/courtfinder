@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            new MaterialPageRoute(builder: (context) => new CourtScreen()),
+                            new MaterialPageRoute(builder: (context) => new CourtScreen('New York', 3)),
                           );
                         },
                         child: new Text('Find courts'),
