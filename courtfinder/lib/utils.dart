@@ -4,6 +4,8 @@ import 'newyork.dart';
 
 class Utils { 
 
+  // returns a widget that has a background picture and the name of the location
+  // new york routes to a new york-specific page, others just route to generic court screen
   static Widget getLocation(BuildContext context, String imageName, String locationName) { 
     return 
       new Container(
@@ -32,12 +34,16 @@ class Utils {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        new Text(locationName,
-                            textAlign: TextAlign.center,
-                            style: new TextStyle(
-                              fontSize: 48.0,
-                              color: new Color(0xFFFFFFFF),
-                            ))
+                        new Container(
+                          child: new Text(locationName,
+                              textAlign: TextAlign.center,
+                              style: new TextStyle(
+                                fontSize: 48.0,
+                                color: new Color(0xFFFFFFFF),
+                              )
+                            ),
+                            color: new Color(0x787878),
+                        )
                       ],
                     )
                   ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'filter.dart';
 
 class Court {
   String imageName;
@@ -72,6 +73,15 @@ class CourtScreen extends StatelessWidget {
               fontFamily: 'Helvetica', 
               fontWeight: FontWeight.bold)
             ),
+          new RaisedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                new MaterialPageRoute(builder: (context) => new FilterScreen()),
+              );
+            },
+            child: new Text('Filter courts'),
+          ),            
           _getCourtDisplay(new Court('images/ruckerpark.jpg', 'Rucker Park', true, 0.8)),
           _getCourtDisplay(new Court('images/venicebeach.jpg', 'Venice Beach', true, 2108.9)),
           _getCourtDisplay(new Court('images/lincolnpark.jpg', 'Lincoln Park', true, 1037.1))
