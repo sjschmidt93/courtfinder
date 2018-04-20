@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'settings.dart';
 import 'court.dart';
 import 'login.dart';
+import 'location.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -39,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            new MaterialPageRoute(builder: (context) => new CourtScreen()),
+                            new MaterialPageRoute(builder: (context) => new CourtScreen('New York', 3)),
                           );
                         },
                         child: new Text('Find courts'),
@@ -75,33 +76,6 @@ class HomeScreen extends StatelessWidget {
           ],
         )
       ),
-    );
-  }
-}
-
-class LocationScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      body: new ListView(
-        children: [
-          new Image.asset(
-            'images/newyork.jpg',
-            height: 240.0,
-            fit: BoxFit.cover,
-          ),
-          new Image.asset(
-            'images/losangeles.jpg',
-            height: 240.0,
-            fit: BoxFit.cover,
-          ),
-          new Image.asset(
-            'images/chicago.jpg',
-            height: 240.0,
-            fit: BoxFit.cover,
-          ),                    
-        ],
-      )
     );
   }
 }
