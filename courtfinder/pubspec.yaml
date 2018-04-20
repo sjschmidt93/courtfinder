@@ -5,7 +5,9 @@ dependencies:
   flutter:
     sdk: flutter
   fire_functions:
-    path: /Users/kevin/Development/fire_functions
+    git:
+      url: https://github.com/ProPorygon/FireFunctions
+      ref: dev
   google_sign_in: "^3.0.2"
   firebase_auth: ^0.5.5
   firebase_core: ^0.2.3

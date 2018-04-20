@@ -88,9 +88,11 @@ packages:
   fire_functions:
     dependency: "direct main"
     description:
-      path: "/Users/kevin/Development/fire_functions"
-      relative: false
-    source: path
+      path: "."
+      ref: dev
+      resolved-ref: e08f835ad9a62651ddf6af86a839df772e9176ef
+      url: "https://github.com/ProPorygon/FireFunctions"
+    source: git
     version: "0.0.1"
   firebase_auth:
     dependency: "direct main"
