@@ -10,18 +10,15 @@ export const getNearbyCourts = functions.https.onCall((data, context) => {
 });
 
 export const scheduleGame = functions.https.onCall((data, context) => {
-    const uid = context.auth.uid;
-    return helpers.scheduleGame(data, uid);
+    return helpers.scheduleGame(data);
 });
 
 export const addUserGame = functions.https.onCall((data, context) => {
-    const uid = context.auth.uid;
-    return helpers.addUserGame(data, uid);
+    return helpers.addUserGame(data);
 });
 
 export const removeUserGame = functions.https.onCall((data, context) => {
-    const uid = context.auth.uid;
-    return helpers.removeUserGame(data, uid);
+    return helpers.removeUserGame(data);
 });
 
 export const getGameInfo = functions.https.onCall((data, context) => {
@@ -30,4 +27,16 @@ export const getGameInfo = functions.https.onCall((data, context) => {
 
 export const addCourt = functions.https.onCall((data) => {
     return helpers.addCourt(data);
+});
+
+export const getGamesForCourt = functions.https.onCall((data) => {
+    return helpers.getGamesForCourt(data);
+});
+
+export const getAllCourts = functions.https.onCall((data) => {
+    return helpers.getAllCourts();
+});
+
+export const getAllGames = functions.https.onCall((data) => {
+    return helpers.getAllGames();
 });

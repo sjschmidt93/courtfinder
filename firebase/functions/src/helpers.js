@@ -35,10 +35,10 @@ export const helpers = (function() {
         return gameData.data();
     };
 
-    const scheduleGame = async function(data, uid) {
+    const scheduleGame = async function(data) {
         const docData = {
-            court: data.court,
-            creator: uid,
+            court: data.courtId,
+            creator: data.userId,
             participants: {},
             time: new Date(data.time)
         };
@@ -46,9 +46,9 @@ export const helpers = (function() {
         return gameRef.set(docData);
     };
 
-    const addUserGame = async function(data, uid) {
-        const userId = data.user || uid;
-        const gameRef = admin.firestore().collection('games').doc(data.id);
+    const addUserGame = async function(data) {
+        const userId = data.userId;
+        const gameRef = admin.firestore().collection('games').doc(data.gameId);
         const participantsData = {};
         participantsData[userId] = true;
         return gameRef.set({
@@ -56,9 +56,9 @@ export const helpers = (function() {
         }, {merge: true});
     };
 
-    const removeUserGame = async function(data, uid) {
-        const userId = data.user || uid;
-        const gameRef = admin.firestore().collection('games').doc(data.id);
+    const removeUserGame = async function(data) {
+        const userId = data.userId;
+        const gameRef = admin.firestore().collection('games').doc(data.gameId);
         const participantsData = {};
         participantsData[userId] = false;
         return gameRef.update({
@@ -69,7 +69,37 @@ export const helpers = (function() {
     const addCourt = async function(data) {
         const courtRef = admin.firestore().collection('courts').doc();
         return courtRef.set(data);
-    }
+    };
+
+    const getGamesForCourt = async function(data) {
+        const courtRef = admin.firestore().collection('games').where("court", "==", data.courtId);
+        const results = await courtRef.get();
+        const gameData = [];
+        results.forEach((doc) => {
+            gameData.push(doc.data());
+        })
+        return gameData;
+    };
+
+    const getAllCourts = async function() {
+        const courtsRef = admin.firestore().collection('courts');
+        const results = await courtsRef.get();
+        const courtData = [];
+        results.forEach((doc) => {
+            courtData.push(doc.data());
+        });
+        return courtData;
+    };
+
+    const getAllGames = async function() {
+        const gamesRef = admin.firestore().collection('games');
+        const results = await gamesRef.get();
+        const gameData = [];
+        results.forEach((doc) => {
+            gameData.push(doc.data());
+        });
+        return gameData;
+    };
 
     const publicFunctions = {
         getNearbyCourts,
@@ -78,6 +108,9 @@ export const helpers = (function() {
         addUserGame,
         removeUserGame,
         addCourt,
+        getAllCourts,
+        getAllGames,
+        getGamesForCourt,
     };
     return publicFunctions;
 })();

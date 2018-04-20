@@ -57,9 +57,10 @@ describe('Cloud Functions', () => {
         const ids = [];
         it('should add a game to the games collection', async () => {
             const query = {
-                court: "somecourt"
+                courtId: "somecourt",
+                userId: "someuser"
             }
-            const writeResult = await helpers.scheduleGame(query, "someuser");
+            const writeResult = await helpers.scheduleGame(query);
             const ref = admin.firestore().collection('games').where('court', '==', 'somecourt');
             const result = await ref.get();
             assert.isAbove(result.size, 0);
@@ -97,8 +98,8 @@ describe('Cloud Functions', () => {
         });
         it('should add a user as a game participant', async () => {
             const query = {
-                id: gameRef.id,
-                user: "userid",
+                gameId: gameRef.id,
+                userId: "userid",
             }
             const result = await helpers.addUserGame(query);
             const doc = await gameRef.get();
@@ -128,8 +129,8 @@ describe('Cloud Functions', () => {
         });
         it('should remove a user as a game participant', async () => {
             const query = {
-                id: gameRef.id,
-                user: "userid",
+                gameId: gameRef.id,
+                userId: "userid",
             }
             const queryResult = await helpers.removeUserGame(query);
             const doc = await gameRef.get();
@@ -192,6 +193,42 @@ describe('Cloud Functions', () => {
         });
     });
 
+    describe('GetGamesForCourt', () => {
+        let gameDoc;
+        let courtDoc;
+        const gameData = {
+            court: "newcourt",
+            participants: [],
+            time: Date.now(),
+        };
+        const courtData = {
+            latitude: 20,
+            longitude: 20,
+            name: "Court",
+            region: "test",
+        };
+        before(() => {
+            gameDoc = admin.firestore().collection('games').doc("newgame");
+            courtDoc = admin.firestore().collection('courts').doc("newcourt");
+            return Promise.all([
+                gameDoc.set(gameData),
+                courtDoc.set(courtData),
+            ]);
+        });
+        after(() => {
+            return Promise.all([
+                gameDoc.delete(),
+                courtDoc.delete(),
+            ]);
+        });
+        it('should find games by court id', () => {
+            const query = {courtId: "newcourt"};
+            return helpers.getGamesForCourt(query).then((result) => {
+                assert.deepEqual(result[0], gameData);
+                return;  
+            });
+        });
+    });
 });
 
 
