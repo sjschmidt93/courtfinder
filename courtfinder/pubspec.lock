@@ -90,7 +90,7 @@ packages:
     description:
       path: "."
       ref: dev
-      resolved-ref: e08f835ad9a62651ddf6af86a839df772e9176ef
+      resolved-ref: "385ee817bc61ef73fd0a1371899c98dbb2a510af"
       url: "https://github.com/ProPorygon/FireFunctions"
     source: git
     version: "0.0.1"
@@ -195,6 +195,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0-alpha.9"
+  location:
+    dependency: "direct main"
+    description:
+      name: location
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   logging:
     dependency: transitive
     description:

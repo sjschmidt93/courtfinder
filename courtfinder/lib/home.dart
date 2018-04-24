@@ -1,3 +1,4 @@
+import 'package:courtfinder/api.dart';
 import 'package:flutter/material.dart';
 import 'settings.dart';
 import 'court.dart';
@@ -38,10 +39,12 @@ class HomeScreen extends StatelessWidget {
                       ),  
                       new RaisedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            new MaterialPageRoute(builder: (context) => new CourtScreen('New York', 3)),
-                          );
+                          ApiFunctions.getAllCourts().then((courts) {
+                            Navigator.push(
+                              context,
+                              new MaterialPageRoute(builder: (context) => new CourtScreen('New York', 3)),
+                            );
+                          });
                         },
                         child: new Text('Find courts'),
                       )

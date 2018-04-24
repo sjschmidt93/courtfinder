@@ -8,9 +8,11 @@ dependencies:
     git:
       url: https://github.com/ProPorygon/FireFunctions
       ref: dev
+#    path: /Users/kevin/Development/fire_functions
   google_sign_in: "^3.0.2"
   firebase_auth: ^0.5.5
   firebase_core: ^0.2.3
+  location: ^1.2.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

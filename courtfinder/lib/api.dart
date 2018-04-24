@@ -4,7 +4,7 @@ import 'package:fire_functions/fire_functions.dart';
 
 class ApiFunctions {
   static Future<Map> addUserGame(String userId, String gameId) async {
-    Map data = {
+    Map<String, dynamic> data = {
       "gameId": gameId,
       "userId": userId,
     };
@@ -12,14 +12,14 @@ class ApiFunctions {
   }
 
   static Future<Map> getGameInfo(String gameId) async {
-    Map data = {
+    Map<String, dynamic> data = {
       "id": gameId
     };
     return await FireFunctions.callFunction("getGameInfo", data);
   }
 
-  static Future<Map> getNearbyCourts(double latitude, double longitude, double range) async {
-    Map data = {
+  static Future<List> getNearbyCourts(double latitude, double longitude, double range) async {
+    Map<String, dynamic> data = {
       "location": {
         "latitude": latitude,
         "longitude": longitude,
@@ -30,7 +30,7 @@ class ApiFunctions {
   }
 
   static Future<Map> removeUserGame(String gameId, String userId) async {
-    Map data = {
+    Map<String, dynamic> data = {
       "gameId": gameId,
       "userId": userId,
     };
@@ -38,7 +38,7 @@ class ApiFunctions {
   }
 
   static Future<Map> scheduleGame(String courtId, String userId, DateTime time) async {
-    Map data = {
+    Map<String, dynamic> data = {
       "userId": userId,
       "courtId": courtId,
       "time": time,
@@ -46,18 +46,18 @@ class ApiFunctions {
     return await FireFunctions.callFunction("scheduleGame", data);
   }
 
-  static Future<Map> getGamesForCourt(String courtId) async {
-    Map data = {
+  static Future<List> getGamesForCourt(String courtId) async {
+    Map<String, dynamic> data = {
       "courtId": courtId,
     };
     return await FireFunctions.callFunction("getGamesForCourt", data);
   }
 
-  static Future<Map> getAllCourts() async {
+  static Future<List> getAllCourts() async {
     return await FireFunctions.callFunction("getAllCourts", {});
   }
 
-  static Future<Map> getAllGames() async {
+  static Future<List> getAllGames() async {
     return await FireFunctions.callFunction("getAllGames", {});
   }
 }
