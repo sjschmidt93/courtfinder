@@ -2,11 +2,12 @@ from keras.models import load_model
 from keras.preprocessing.image import load_img, ImageDataGenerator, array_to_img, img_to_array
 from keras.backend import tf as ktf
 from scipy.misc import imresize
+from trainmodel import generator_from_dir
 import numpy as np
 import sys
 
 IMAGE_SIZE = 300
-BATCH_SIZE = 16
+BATCH_SIZE = 8
 
 def load_image_grid(filename):
     image = load_img(filename)
@@ -27,12 +28,10 @@ def load_image_grid(filename):
 
 def predict_convnet(filename, to_predict):
     model = load_model(filename)
-    img_arrays = load_image_grid(to_predict)
-    resized = list(map(lambda v: imresize(v, (150, 150), interp='nearest'), img_arrays))
-    img_array = np.array(resized)
-    print(img_array.shape)
-    
-    predictions = model.predict(img_array, batch_size=BATCH_SIZE)
+    image_gen = ImageDataGenerator()
+    x_gen = generator_from_dir(image_gen, to_predict)
+    predictions = model.predict_generator(x_gen,
+        steps=800 // BATCH_SIZE)
     print(predictions)
 
 def main():
