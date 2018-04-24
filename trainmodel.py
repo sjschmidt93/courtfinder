@@ -3,8 +3,12 @@ from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D, Activation, Dropout, Flatten, Dense
 from keras import backend as K
 import sys
+import win_unicode_console
 
-BATCH_SIZE = 16
+win_unicode_console.enable()
+
+BATCH_SIZE = 8
+IMAGE_SIZE = 300
 
 # ConvNet Following this Guide: https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html
 
@@ -12,7 +16,7 @@ def generator_from_dir(image_generator, directory):
     """Creates a Keras generator to load image data from a directory"""
     data_generator = image_generator.flow_from_directory(
         directory,
-        target_size=(150,150),
+        target_size=(IMAGE_SIZE,IMAGE_SIZE),
         batch_size=BATCH_SIZE,
         class_mode='binary',
     )
@@ -34,7 +38,7 @@ def compile_convnet_model(input_shape):
     model.add(MaxPooling2D(pool_size=(2, 2)))
 
     model.add(Flatten())
-    model.add(Dense(64))
+    model.add(Dense(256))
     model.add(Activation('relu'))
     model.add(Dropout(0.5))
     model.add(Dense(1))
@@ -42,7 +46,7 @@ def compile_convnet_model(input_shape):
 
     model.compile(
         loss='binary_crossentropy',
-        optimizer='rmsprop',
+        optimizer='adam',
         metrics=['accuracy'],
     )
 
@@ -58,15 +62,16 @@ def train_convnet_model(training_dir, validation_dir, output_file):
         shear_range=0.2,
         zoom_range=0.2,
         horizontal_flip=True,
+        vertical_flip=True,
         fill_mode='nearest',
     )
 
     train_generator = generator_from_dir(image_generator, training_dir)
     validation_generator = generator_from_dir(image_generator, validation_dir)
     if K.image_data_format() == 'channels_first':
-        input_shape = (3, 150, 150)
+        input_shape = (3, IMAGE_SIZE, IMAGE_SIZE)
     else:
-        input_shape = (150, 150, 3)
+        input_shape = (IMAGE_SIZE, IMAGE_SIZE, 3)
 
     model = compile_convnet_model(input_shape)
 

@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Court A",
+        "latitude": -88.2434,
+        "longitude": 40.1164
+    },
+    {
+        "name": "Court B",
+        "latitude": -88.2434,
+        "longitude": 40.1164
+    },
+    {
+        "name": "Court C",
+        "latitude": -88.2434,
+        "longitude": 40.1164
+    },
+    {
+        "name": "Court D",
+        "latitude": -88.2434,
+        "longitude": 40.1164
+    }
+]
