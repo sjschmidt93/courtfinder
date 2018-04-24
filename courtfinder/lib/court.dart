@@ -73,7 +73,7 @@ class CourtScreenState extends State<CourtScreen> {
                 ),
                 new ListTile(
                   leading: new Icon(Icons.place),
-                  title: new Text(court.distance.toString() + ' miles away'),
+                  title: new Text((court.distance/1000.0).toStringAsFixed(2) + ' miles away'),
                 ),
                 new ListTile(
                   leading: new Icon(Icons.panorama_fish_eye),
@@ -94,7 +94,7 @@ class CourtScreenState extends State<CourtScreen> {
 
     List<Widget> displayList = [
       new Text(
-          this.results.toString() + " courts found in " + this.location + "\n",
+          this.results.toString() + " courts found" + " near you." + "\n",
           textAlign: TextAlign.center,
           style: new TextStyle(
               fontFamily: 'Helvetica', fontWeight: FontWeight.bold)),
@@ -127,7 +127,7 @@ class CourtScreenState extends State<CourtScreen> {
 
   @override
   void initState() {
-    Location userLocation = new Location();
+    var userLocation = new Location();
     ApiFunctions.getAllCourts().then((courts) {
       userLocation.getLocation.then((currentLocation) {
         setState(() {

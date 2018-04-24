@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:fire_functions/fire_functions.dart';
 
 class ApiFunctions {

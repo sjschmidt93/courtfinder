@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'utils.dart';
 
 class LocationScreen extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(

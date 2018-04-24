@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'settings.dart';
 import 'court.dart';
 import 'login.dart';
-import 'location.dart';
+import 'loc.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
