@@ -59,6 +59,7 @@ class CourtScreenState extends State<CourtScreen> {
         ),
       ),
       padding: new EdgeInsets.all(20.0),
+      margin: new EdgeInsets.fromLTRB(4.0, 12.0, 4.0, 8.0),
       child: new Row(
         children: [
           new Expanded(
@@ -73,7 +74,7 @@ class CourtScreenState extends State<CourtScreen> {
                 ),
                 new ListTile(
                   leading: new Icon(Icons.place),
-                  title: new Text(court.distance.toString() + ' miles away'),
+                  title: new Text(court.distance.truncate().toString() + ' miles away'),
                 ),
                 new ListTile(
                   leading: new Icon(Icons.panorama_fish_eye),
