@@ -1,0 +1,53 @@
+{
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint ./src",
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log",
+    "build": "babel src -d ./",
+    "test": "nyc mocha --reporter spec --require babel-core/register"
+  },
+  "dependencies": {
+    "firebase": "^4.12.1",
+    "firebase-admin": "~5.12.0",
+    "firebase-functions": "^1.0.1",
+    "npm": "^5.8.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-istanbul": "^4.1.6",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "chai": "^4.1.2",
+    "eslint": "^4.12.0",
+    "eslint-plugin-promise": "^3.6.0",
+    "firebase-functions-test": "^0.1.1",
+    "mocha": "^5.1.0",
+    "nyc": "^11.6.0",
+    "sinon": "^4.5.0"
+  },
+  "private": true,
+  "nyc": {
+    "sourceMap": false,
+    "instrument": false
+  },
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "node": "6.11.5"
+          },
+          "test": {
+            "plugins": [ "istanbul" ]
+          }
+        }
+      ]
+    ]
+  }
+}

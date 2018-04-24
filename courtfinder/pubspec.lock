@@ -85,13 +85,29 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
-  english_words:
+  fire_functions:
     dependency: "direct main"
     description:
-      name: english_words
+      path: "."
+      ref: dev
+      resolved-ref: "385ee817bc61ef73fd0a1371899c98dbb2a510af"
+      url: "https://github.com/ProPorygon/FireFunctions"
+    source: git
+    version: "0.0.1"
+  firebase_auth:
+    dependency: "direct main"
+    description:
+      name: firebase_auth
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.0"
+    version: "0.5.5"
+  firebase_core:
+    dependency: "direct main"
+    description:
+      name: firebase_core
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.3"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -116,6 +132,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.5"
+  google_sign_in:
+    dependency: "direct main"
+    description:
+      name: google_sign_in
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.2"
   html:
     dependency: transitive
     description:
@@ -172,6 +195,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0-alpha.9"
+  location:
+    dependency: "direct main"
+    description:
+      name: location
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   logging:
     dependency: transitive
     description:
@@ -403,3 +433,4 @@ packages:
     version: "2.1.13"
 sdks:
   dart: ">=2.0.0-dev.28.0 <=2.0.0-edge.3c4dccbd46f152be9e1b6ca95c57357e8e48057c"
+  flutter: ">=0.1.4 <2.0.0"
