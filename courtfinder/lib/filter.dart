@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 import 'court.dart';
 
+// create a filter class which is then passed to the Court Screen after changes are saved
+class Filter {
+  bool newYork;
+  bool chicago;
+  bool la;
+  double radius;
+  Filter(this.newYork, this.chicago, this.la, this.radius);
+}
+
 class FilterScreen extends StatefulWidget { 
     @override
     FilterScreenState createState() => new FilterScreenState();
@@ -86,51 +95,70 @@ class FilterScreenState extends State<FilterScreen> {
       list.add(d);
 
     return new Scaffold(
-      body: new Column( 
-        children: [ 
-          new Row(
-            children: [
-              new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  new Text('Filter based on location:'),
-                  getRowWithSwitch('New York'),
-                  getRowWithSwitch('Chicago'),
-                  getRowWithSwitch('Los Angeles'),
-                ]
-              ),
-              new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  new Text('Select search radius:'),
-                  new DropdownButton<String>(
-                    value: radius.toString(),
-                    items: list.map((value) {
-                      return new DropdownMenuItem<String>(
-                        value: value.toString(),
-                        child: new Text(value.toString()),
-                      );
-                    }).toList(),
-                    onChanged: handleRadiusChange,
-                  ),
-                ]
-              )
-            ]
-          ),
-          new Row(
-            children: [
-              new RaisedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    new MaterialPageRoute(builder: (context) => new CourtScreen('New York', 3)),
-                  );
-                },
-                child: new Text('Save your changes.'),
-              ),  
-            ]
-          ) 
-        ]
+      body: new Container(
+        decoration: new BoxDecoration(
+        color: new Color(0x1F3860FF),
+        borderRadius: new BorderRadius.all(
+          const Radius.circular(8.0),
+        ), 
+      ),
+      child: new Column( 
+          children: [ 
+            new Row(
+              children: [
+                new Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    new Text('Filter based on location:'),
+                    getRowWithSwitch('New York'),
+                    getRowWithSwitch('Chicago'),
+                    getRowWithSwitch('Los Angeles'),
+                  ]
+                ),
+                new Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    new Text('Select search radius:'),
+                    new DropdownButton<String>(
+                      value: radius.toString(),
+                      items: list.map((value) {
+                        return new DropdownMenuItem<String>(
+                          value: value.toString(),
+                          child: new Text(value.toString()),
+                        );
+                      }).toList(),
+                      onChanged: handleRadiusChange,
+                    ),
+                  ]
+                )
+              ]
+            ),
+            new Row(
+              children: [
+                // when user saves their changes, pass Filter object to CourtScreen and render accordingly
+                new RaisedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(builder: (context) => new CourtScreen('New York', 3)),
+                    );
+                  },
+                  child: new Text('Save your changes'),                
+                ),
+                // when user cancels their changes, pass NULL to CourtScreen
+                new RaisedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(builder: (context) => new CourtScreen('New York', 3)),
+                    );
+                  },
+                  child: new Text('Cancel'),                
+                ),
+              ]
+            ) 
+          ]
+        )
       )
     );
   }

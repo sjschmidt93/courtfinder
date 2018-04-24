@@ -35,6 +35,12 @@ class Utils {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         new Container(
+                          decoration: new BoxDecoration(
+                            color: new Color(0x1F3860FF),
+                            borderRadius: new BorderRadius.all(
+                              const Radius.circular(8.0),
+                            ), 
+                          ),
                           child: new Text(locationName,
                               textAlign: TextAlign.center,
                               style: new TextStyle(
@@ -42,7 +48,6 @@ class Utils {
                                 color: new Color(0xFFFFFFFF),
                               )
                             ),
-                            color: new Color(0x787878),
                         )
                       ],
                     )
