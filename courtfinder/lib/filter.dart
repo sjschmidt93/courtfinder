@@ -10,17 +10,23 @@ class Filter {
   Filter(this.newYork, this.chicago, this.la, this.radius);
 }
 
-class FilterScreen extends StatefulWidget { 
+class FilterScreen extends StatefulWidget {
+    final String userToken;
+
+  const FilterScreen({Key key, this.userToken}) : super(key: key);
+
     @override
-    FilterScreenState createState() => new FilterScreenState();
+    FilterScreenState createState() => new FilterScreenState(userToken);
 }
 
 class FilterScreenState extends State<FilterScreen> { 
-
+  final String userToken;
   bool newYork = true;
   bool chicago = true;
   bool la = true;
   double radius = 1.0;
+
+  FilterScreenState(this.userToken);
 
   void handleNewYorkTap(bool newValue) {
     setState(() {
@@ -140,7 +146,7 @@ class FilterScreenState extends State<FilterScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      new MaterialPageRoute(builder: (context) => new CourtScreen('New York', 3)),
+                      new MaterialPageRoute(builder: (context) => new CourtScreen('New York', 3, userToken)),
                     );
                   },
                   child: new Text('Save your changes'),                
@@ -150,7 +156,7 @@ class FilterScreenState extends State<FilterScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      new MaterialPageRoute(builder: (context) => new CourtScreen('New York', 3)),
+                      new MaterialPageRoute(builder: (context) => new CourtScreen('New York', 3, userToken)),
                     );
                   },
                   child: new Text('Cancel'),                

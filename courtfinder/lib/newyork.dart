@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'utils.dart';
 
 class NewYorkScreen extends StatelessWidget {
+  final String userToken;
+
+  const NewYorkScreen({Key key, this.userToken}) : super(key: key);
 
 
   @override
@@ -9,11 +12,11 @@ class NewYorkScreen extends StatelessWidget {
     return new Scaffold(
         body: new ListView(
       children: [
-        Utils.getLocation(context, 'images/manhattan.jpg', 'Manhattan'),
-        Utils.getLocation(context, 'images/brooklyn.jpg', 'Brooklyn'),
-        Utils.getLocation(context, 'images/statenisland.jpg', 'Staten Island'),
-        Utils.getLocation(context, 'images/bronx.jpg', 'The Bronx'),
-        Utils.getLocation(context, 'images/queens.jpg', 'Queens'),
+        Utils.getLocation(context, 'images/manhattan.jpg', 'Manhattan', userToken),
+        Utils.getLocation(context, 'images/brooklyn.jpg', 'Brooklyn', userToken),
+        Utils.getLocation(context, 'images/statenisland.jpg', 'Staten Island', userToken),
+        Utils.getLocation(context, 'images/bronx.jpg', 'The Bronx', userToken),
+        Utils.getLocation(context, 'images/queens.jpg', 'Queens', userToken),
       ],
     ));
   }

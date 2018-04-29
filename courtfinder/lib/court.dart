@@ -13,17 +13,19 @@ class Court {
 }
 
 class CourtScreen extends StatefulWidget {
+  final String _userToken;
   final _location;
   final _results;
 
-  CourtScreen(this._location, this._results);
+  CourtScreen(this._location, this._results, this._userToken);
 
   @override
   State<StatefulWidget> createState() =>
-      new CourtScreenState(_location, _results);
+      new CourtScreenState(_location, _results, _userToken);
 }
 
 class CourtScreenState extends State<CourtScreen> {
+  final String _userToken;
   String location;
   int results;
   bool colorFlag = true;
@@ -103,7 +105,7 @@ class CourtScreenState extends State<CourtScreen> {
         onPressed: () {
           Navigator.push(
             context,
-            new MaterialPageRoute(builder: (context) => new FilterScreen()),
+            new MaterialPageRoute(builder: (context) => new FilterScreen(userToken: _userToken,)),
           );
         },
         child: new Text('Filter courts'),
@@ -121,7 +123,7 @@ class CourtScreenState extends State<CourtScreen> {
     return displayList;
   }
 
-  CourtScreenState(String location, int results) {
+  CourtScreenState(String location, int results, this._userToken) {
     this.location = location;
     this.results = results;
   }

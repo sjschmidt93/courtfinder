@@ -70,6 +70,7 @@ class HomeScreenState extends State<HomeScreen> {
 
   void logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    _googleSignIn.signOut();
     await prefs.remove("firebaseToken");
     await prefs.remove("firebaseEmail");
     await prefs.remove("firebaseName");
@@ -142,7 +143,7 @@ class HomeScreenState extends State<HomeScreen> {
                                   context,
                                   new MaterialPageRoute(
                                       builder: (context) =>
-                                          new CourtScreen('New York', 3)),
+                                          new CourtScreen('New York', 3, userToken)),
                                 );
                               });
                             },

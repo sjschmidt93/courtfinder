@@ -6,7 +6,7 @@ class Utils {
 
   // returns a widget that has a background picture and the name of the location
   // new york routes to a new york-specific page, others just route to generic court screen
-  static Widget getLocation(BuildContext context, String imageName, String locationName) { 
+  static Widget getLocation(BuildContext context, String imageName, String locationName, String userToken) {
     return 
       new Container(
           height: 255.0,
@@ -15,7 +15,7 @@ class Utils {
                 Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (context) => locationName == 'New York' ? new NewYorkScreen() : new CourtScreen(locationName, 3)),
+                      builder: (context) => locationName == 'New York' ? new NewYorkScreen(userToken: userToken) : new CourtScreen(locationName, 3, userToken)),
                 );
               },
               child: new Container(
