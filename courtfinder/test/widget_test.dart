@@ -1,3 +1,4 @@
+import 'package:courtfinder/api.dart';
 // This is a basic Flutter widget test.
 // To perform an interaction with a widget in your test, use the WidgetTester utility that Flutter
 // provides. For example, you can send tap and scroll gestures. You can also use WidgetTester to
@@ -26,4 +27,8 @@ void main() {
 //    expect(find.text('0'), findsNothing);
 //    expect(find.text('1'), findsOneWidget);
 //  });
+  test("testGetAllCourts", () async {
+    var result = await ApiFunctions.getAllCourts();
+    print(result);
+  });
 }

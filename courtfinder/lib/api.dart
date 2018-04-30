@@ -11,13 +11,12 @@ class ApiFunctions {
   }
 
   static Future<Map> getGameInfo(String gameId) async {
-    Map<String, dynamic> data = {
-      "id": gameId
-    };
+    Map<String, dynamic> data = {"id": gameId};
     return await FireFunctions.callFunction("getGameInfo", data);
   }
 
-  static Future<List> getNearbyCourts(double latitude, double longitude, double range) async {
+  static Future<List> getNearbyCourts(
+      double latitude, double longitude, double range) async {
     Map<String, dynamic> data = {
       "location": {
         "latitude": latitude,
@@ -36,7 +35,8 @@ class ApiFunctions {
     return await FireFunctions.callFunction("removeUserGame", data);
   }
 
-  static Future<Map> scheduleGame(String courtId, String userId, DateTime time) async {
+  static Future<Map> scheduleGame(
+      String courtId, String userId, DateTime time) async {
     Map<String, dynamic> data = {
       "userId": userId,
       "courtId": courtId,

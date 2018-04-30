@@ -131,7 +131,9 @@ class HomeScreenState extends State<HomeScreen> {
                               Navigator.push(
                                 context,
                                 new MaterialPageRoute(
-                                    builder: (context) => new LocationScreen()),
+                                    builder: (context) => new LocationScreen(
+                                          userToken: userToken,
+                                        )),
                               );
                             },
                             child: new Text('Pick your location'),
@@ -142,8 +144,8 @@ class HomeScreenState extends State<HomeScreen> {
                                 Navigator.push(
                                   context,
                                   new MaterialPageRoute(
-                                      builder: (context) =>
-                                          new CourtScreen('New York', 3, userToken)),
+                                      builder: (context) => new CourtScreen(
+                                          'New York', 3, userToken)),
                                 );
                               });
                             },

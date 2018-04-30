@@ -11,15 +11,15 @@ class Filter {
 }
 
 class FilterScreen extends StatefulWidget {
-    final String userToken;
+  final String userToken;
 
   const FilterScreen({Key key, this.userToken}) : super(key: key);
 
-    @override
-    FilterScreenState createState() => new FilterScreenState(userToken);
+  @override
+  FilterScreenState createState() => new FilterScreenState(userToken);
 }
 
-class FilterScreenState extends State<FilterScreen> { 
+class FilterScreenState extends State<FilterScreen> {
   final String userToken;
   bool newYork = true;
   bool chicago = true;
@@ -46,46 +46,42 @@ class FilterScreenState extends State<FilterScreen> {
     });
   }
 
-  void handleRadiusChange(String newValue) { 
+  void handleRadiusChange(String newValue) {
     setState(() {
       radius = double.parse(newValue);
     });
   }
 
-  getCallBackForSwitch(String locationName) { 
-    switch(locationName) {
+  getCallBackForSwitch(String locationName) {
+    switch (locationName) {
       case 'New York':
         return handleNewYorkTap;
       case 'Chicago':
         return handleChicagoTap;
       case 'Los Angeles':
-        return handleLATap;                
+        return handleLATap;
     }
   }
 
-
-  getStateParamForSwitch(String locationName) { 
-    switch(locationName) {
+  getStateParamForSwitch(String locationName) {
+    switch (locationName) {
       case 'New York':
         return newYork;
       case 'Chicago':
         return chicago;
       case 'Los Angeles':
-        return la;                
+        return la;
     }
   }
 
-  getRowWithSwitch(String locationName) { 
-    return new Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          new Switch(
-            value: getStateParamForSwitch(locationName),
-            onChanged: getCallBackForSwitch(locationName),
-          ),
-          new Text(locationName),
-        ]
-      );
+  getRowWithSwitch(String locationName) {
+    return new Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      new Switch(
+        value: getStateParamForSwitch(locationName),
+        onChanged: getCallBackForSwitch(locationName),
+      ),
+      new Text(locationName),
+    ]);
   }
 
   static const MIN = 1.0;
@@ -93,80 +89,71 @@ class FilterScreenState extends State<FilterScreen> {
   static const INC = 1.0;
 
   @override
-  Widget build(BuildContext context) { 
-
+  Widget build(BuildContext context) {
     // creates a list of doubles for the dropdownbutton widget
     var list = [];
-    for(double d = MIN; d <=MAX; d+=INC)
-      list.add(d);
+    for (double d = MIN; d <= MAX; d += INC) list.add(d);
 
     return new Scaffold(
-      body: new Container(
-        decoration: new BoxDecoration(
-        color: new Color(0x1F3860FF),
-        borderRadius: new BorderRadius.all(
-          const Radius.circular(8.0),
-        ), 
-      ),
-      child: new Column( 
-          children: [ 
-            new Row(
-              children: [
-                new Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    new Text('Filter based on location:'),
-                    getRowWithSwitch('New York'),
-                    getRowWithSwitch('Chicago'),
-                    getRowWithSwitch('Los Angeles'),
-                  ]
-                ),
-                new Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    new Text('Select search radius:'),
-                    new DropdownButton<String>(
-                      value: radius.toString(),
-                      items: list.map((value) {
-                        return new DropdownMenuItem<String>(
-                          value: value.toString(),
-                          child: new Text(value.toString()),
-                        );
-                      }).toList(),
-                      onChanged: handleRadiusChange,
-                    ),
-                  ]
-                )
-              ]
+        body: new Container(
+            decoration: new BoxDecoration(
+              color: new Color(0x1F3860FF),
+              borderRadius: new BorderRadius.all(
+                const Radius.circular(8.0),
+              ),
             ),
-            new Row(
-              children: [
+            child: new Column(children: [
+              new Row(children: [
+                new Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      new Text('Filter based on location:'),
+                      getRowWithSwitch('New York'),
+                      getRowWithSwitch('Chicago'),
+                      getRowWithSwitch('Los Angeles'),
+                    ]),
+                new Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      new Text('Select search radius:'),
+                      new DropdownButton<String>(
+                        value: radius.toString(),
+                        items: list.map((value) {
+                          return new DropdownMenuItem<String>(
+                            value: value.toString(),
+                            child: new Text(value.toString()),
+                          );
+                        }).toList(),
+                        onChanged: handleRadiusChange,
+                      ),
+                    ])
+              ]),
+              new Row(children: [
                 // when user saves their changes, pass Filter object to CourtScreen and render accordingly
                 new RaisedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      new MaterialPageRoute(builder: (context) => new CourtScreen('New York', 3, userToken)),
+                      new MaterialPageRoute(
+                          builder: (context) =>
+                              new CourtScreen('New York', 3, userToken)),
                     );
                   },
-                  child: new Text('Save your changes'),                
+                  child: new Text('Save your changes'),
                 ),
                 // when user cancels their changes, pass NULL to CourtScreen
                 new RaisedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      new MaterialPageRoute(builder: (context) => new CourtScreen('New York', 3, userToken)),
+                      new MaterialPageRoute(
+                          builder: (context) =>
+                              new CourtScreen('New York', 3, userToken)),
                     );
                   },
-                  child: new Text('Cancel'),                
+                  child: new Text('Cancel'),
                 ),
-              ]
-            ) 
-          ]
-        )
-      )
-    );
+              ])
+            ])));
   }
 }
-
