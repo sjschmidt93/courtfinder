@@ -30,11 +30,25 @@ class CourtInfoState extends State<CourtInfo> {
   CourtInfoState(
       this._userToken, this._courtId, this._latitude, this._longitude);
 
+
+  void _toggleGame(Map participants, String creator, String gameId) async {
+    if (participants.containsKey(_userToken) && participants[_userToken]) {
+      await ApiFunctions.removeUserGame(gameId, _userToken);
+    }
+    else {
+      await ApiFunctions.addUserGame(gameId, _userToken);
+    }
+    _reloadGames();
+  }
+
   Widget _buildBodyListView() {
     List<Widget> tiles = [
       new Image.network(staticMapUri.toString()),
     ];
     Iterable<Widget> gameTiles = gamesList.map((game) {
+      final String creator = game['creator'];
+      final String gameId = game['id'];
+      final Map participants = game['participants'];
       final timeField = game['time'];
       final DateTime time = DateTime.parse(timeField);
       final int year = time.year;
@@ -44,6 +58,10 @@ class CourtInfoState extends State<CourtInfo> {
       final int minute = time.minute;
       return new ListTile(
         title: new Text("$month-$day-$year, $hour:$minute"),
+        leading: ((participants.containsKey(_userToken) && participants[_userToken]))
+            ? new Icon(Icons.check_box)
+            : new Icon(Icons.check_box_outline_blank),
+        onTap: () => _toggleGame(participants, creator, gameId),
       );
     });
     tiles.addAll(gameTiles);

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:fire_functions/fire_functions.dart';
 
 class ApiFunctions {
-  static Future<Map> addUserGame(String userId, String gameId) async {
+  static Future<Map> addUserGame(String gameId, String userId) async {
     Map<String, dynamic> data = {
       "gameId": gameId,
       "userId": userId,

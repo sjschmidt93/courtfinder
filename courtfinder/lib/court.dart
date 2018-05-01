@@ -129,17 +129,17 @@ class CourtScreenState extends State<CourtScreen> {
     ];
 
     Iterable<Widget> courtDisplays = courts.map((courtData) {
-      num courtLat = courtData["latitude"];
-      num courtLon = courtData["longitude"];
+      num courtLat = courtData['data']["latitude"];
+      num courtLon = courtData['data']["longitude"];
       double distance = _calculateDistance(curLon, curLat, courtLon, courtLat);
       return _getCourtDisplay(new Court(
           'images/ruckerpark.jpg',
-          courtData['name'],
+          courtData['data']['name'],
           true,
           distance,
           courtLat,
           courtLon,
-          "FILL ID LATER"));
+          courtData['id']));
     });
     displayList.addAll(courtDisplays);
     return displayList;
