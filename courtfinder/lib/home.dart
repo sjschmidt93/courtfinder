@@ -17,13 +17,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  String userToken;
+  String useruid;
   String userEmail;
   String userName;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextStyle infoStyle = new TextStyle(
     fontSize: 24.0,
-    color: Colors.white,
+    color: Colors.black,
   );
 
   GoogleSignIn _googleSignIn = new GoogleSignIn(
@@ -39,18 +39,18 @@ class HomeScreenState extends State<HomeScreen> {
       GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       FirebaseUser user = await _auth.signInWithGoogle(
           idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
-      String token = await user.getIdToken();
+      String uid = user.uid;
       String email = user.email;
       String name = user.displayName;
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      await prefs.setString("firebaseToken", token);
+      await prefs.setString("firebaseUid", uid);
       await prefs.setString("firebaseEmail", email);
       await prefs.setString("firebaseName", name);
 
-      print("Login Successful: $token");
+      print("Login Successful: $uid");
       setState(() {
-        userToken = token;
+        useruid = uid;
         userEmail = email;
         userName = name;
       });
@@ -62,7 +62,7 @@ class HomeScreenState extends State<HomeScreen> {
   void loadUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      userToken = prefs.get("firebaseToken");
+      useruid = prefs.get("firebaseUid");
       userEmail = prefs.get("firebaseEmail");
       userName = prefs.get("firebaseName");
     });
@@ -71,12 +71,12 @@ class HomeScreenState extends State<HomeScreen> {
   void logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _googleSignIn.signOut();
-    await prefs.remove("firebaseToken");
+    await prefs.remove("firebaseUid");
     await prefs.remove("firebaseEmail");
     await prefs.remove("firebaseName");
     print("Logging out");
     setState(() {
-      userToken = null;
+      useruid = null;
       userName = null;
       userEmail = null;
     });
@@ -94,7 +94,10 @@ class HomeScreenState extends State<HomeScreen> {
       title: 'courtfinder',
       home: new Scaffold(
           appBar: new AppBar(
-              title: new Text('courtfinder'), backgroundColor: Colors.black),
+            title: new Text('CourtFinder'),
+            backgroundColor: Colors.black,
+            centerTitle: true,
+          ),
           body: new Stack(
             children: <Widget>[
               new Container(
@@ -112,15 +115,20 @@ class HomeScreenState extends State<HomeScreen> {
                     new Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        (userToken != null)
-                            ? new Text(
-                                "Hello $userName",
-                                style: infoStyle,
-                              )
-                            : new Text(
-                                "Not Logged In",
-                                style: infoStyle,
-                              ),
+                        new Container(
+                          padding: new EdgeInsets.all(10.0),
+                          decoration: new BoxDecoration(
+                              color: new Color.fromRGBO(255, 255, 255, 0.5)),
+                          child: (userName != null)
+                              ? new Text(
+                                  "Hello $userName",
+                                  style: infoStyle,
+                                )
+                              : new Text(
+                                  "Not Logged In",
+                                  style: infoStyle,
+                                ),
+                        )
                       ],
                     ),
                     new Row(
@@ -132,7 +140,7 @@ class HomeScreenState extends State<HomeScreen> {
                                 context,
                                 new MaterialPageRoute(
                                     builder: (context) => new LocationScreen(
-                                          userToken: userToken,
+                                          userUid: useruid,
                                         )),
                               );
                             },
@@ -145,7 +153,7 @@ class HomeScreenState extends State<HomeScreen> {
                                   context,
                                   new MaterialPageRoute(
                                       builder: (context) => new CourtScreen(
-                                          'New York', 3, userToken)),
+                                          'New York', 3, useruid)),
                                 );
                               });
                             },

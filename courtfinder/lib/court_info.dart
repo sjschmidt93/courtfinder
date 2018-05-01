@@ -3,22 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:map_view/map_view.dart';
 
 class CourtInfo extends StatefulWidget {
-  final String _userToken;
+  final String _userUid;
   final String _courtId;
   final num _latitude;
   final num _longitude;
-  List games = [];
 
-  CourtInfo(this._userToken, this._courtId, this._latitude, this._longitude);
+  CourtInfo(this._userUid, this._courtId, this._latitude, this._longitude);
 
   @override
   State<StatefulWidget> createState() {
-    return new CourtInfoState(_userToken, _courtId, _latitude, _longitude);
+    return new CourtInfoState(_userUid, _courtId, _latitude, _longitude);
   }
 }
 
 class CourtInfoState extends State<CourtInfo> {
-  final String _userToken;
+  final String _userUid;
   final String _courtId;
   final num _latitude;
   final num _longitude;
@@ -27,16 +26,13 @@ class CourtInfoState extends State<CourtInfo> {
   StaticMapProvider provider =
       new StaticMapProvider("AIzaSyAebXKKhNZ3XQfzFrHP4MT7wtqvBiDn4IE");
 
-  CourtInfoState(
-      this._userToken, this._courtId, this._latitude, this._longitude);
-
+  CourtInfoState(this._userUid, this._courtId, this._latitude, this._longitude);
 
   void _toggleGame(Map participants, String creator, String gameId) async {
-    if (participants.containsKey(_userToken) && participants[_userToken]) {
-      await ApiFunctions.removeUserGame(gameId, _userToken);
-    }
-    else {
-      await ApiFunctions.addUserGame(gameId, _userToken);
+    if (participants.containsKey(_userUid) && participants[_userUid]) {
+      await ApiFunctions.removeUserGame(gameId, _userUid);
+    } else {
+      await ApiFunctions.addUserGame(gameId, _userUid);
     }
     _reloadGames();
   }
@@ -49,6 +45,9 @@ class CourtInfoState extends State<CourtInfo> {
       final String creator = game['creator'];
       final String gameId = game['id'];
       final Map participants = game['participants'];
+      final num partCount = participants.values.fold(0, (acc, el) {
+        if (el) return acc + 1;
+      });
       final timeField = game['time'];
       final DateTime time = DateTime.parse(timeField);
       final int year = time.year;
@@ -56,13 +55,31 @@ class CourtInfoState extends State<CourtInfo> {
       final int day = time.day;
       final int hour = time.hour;
       final int minute = time.minute;
-      return new ListTile(
-        title: new Text("$month-$day-$year, $hour:$minute"),
-        leading: ((participants.containsKey(_userToken) && participants[_userToken]))
-            ? new Icon(Icons.check_box)
-            : new Icon(Icons.check_box_outline_blank),
+      return new Card(
+          child: new ListTile(
+        title: new Text(
+          "$month-$day-$year, $hour:$minute",
+          style: new TextStyle(fontSize: 20.0),
+        ),
+        leading:
+            ((participants.containsKey(_userUid) && participants[_userUid]))
+                ? new Icon(Icons.check_box)
+                : new Icon(Icons.check_box_outline_blank),
+        trailing: new Text(
+          partCount != null ? partCount.toString() : "0",
+          style: new TextStyle(fontSize: 26.0),
+        ),
         onTap: () => _toggleGame(participants, creator, gameId),
-      );
+        onLongPress: () => showModalBottomSheet(
+            context: context,
+            builder: (context) => new ListView(
+                  children: participants.keys.map((item) {
+                    return new ListTile(
+                      title: new Text(item),
+                    );
+                  }).toList(),
+                )),
+      ));
     });
     tiles.addAll(gameTiles);
     return new ListView(
@@ -96,9 +113,12 @@ class CourtInfoState extends State<CourtInfo> {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("$_latitude, $_longitude"),
+        backgroundColor: Colors.black,
       ),
-      body: _buildBodyListView(),
+      body: new RefreshIndicator(
+          child: _buildBodyListView(), onRefresh: () => _reloadGames()),
       floatingActionButton: new FloatingActionButton(
+          backgroundColor: Colors.red[300],
           child: new Icon(Icons.add),
           onPressed: () => showDatePicker(
                       context: context,
@@ -114,7 +134,7 @@ class CourtInfoState extends State<CourtInfo> {
                 final DateTime timeToSave = selectedDate.add(dayTime);
                 print(timeToSave);
                 await ApiFunctions.scheduleGame(
-                    _courtId, _userToken, timeToSave.millisecondsSinceEpoch);
+                    _courtId, _userUid, timeToSave.millisecondsSinceEpoch);
                 _reloadGames();
               })),
     );

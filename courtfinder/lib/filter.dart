@@ -11,12 +11,12 @@ class Filter {
 }
 
 class FilterScreen extends StatefulWidget {
-  final String userToken;
+  final String userUid;
 
-  const FilterScreen({Key key, this.userToken}) : super(key: key);
+  const FilterScreen({Key key, this.userUid}) : super(key: key);
 
   @override
-  FilterScreenState createState() => new FilterScreenState(userToken);
+  FilterScreenState createState() => new FilterScreenState(userUid);
 }
 
 class FilterScreenState extends State<FilterScreen> {

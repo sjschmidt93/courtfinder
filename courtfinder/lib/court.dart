@@ -18,19 +18,19 @@ class Court {
 }
 
 class CourtScreen extends StatefulWidget {
-  final String _userToken;
+  final String _userUid;
   final _location;
   int _results;
 
-  CourtScreen(this._location, this._results, this._userToken);
+  CourtScreen(this._location, this._results, this._userUid);
 
   @override
   State<StatefulWidget> createState() =>
-      new CourtScreenState(_location, _userToken);
+      new CourtScreenState(_location, _userUid);
 }
 
 class CourtScreenState extends State<CourtScreen> {
-  final String _userToken;
+  final String _userUid;
   String location;
   int results;
   bool colorFlag = true;
@@ -64,7 +64,7 @@ class CourtScreenState extends State<CourtScreen> {
             context,
             new MaterialPageRoute(
                 builder: (context) => new CourtInfo(
-                    _userToken, court.id, court.latitude, court.longitude))),
+                    _userUid, court.id, court.latitude, court.longitude))),
         child: new Container(
           decoration: new BoxDecoration(
             color: colorFlag ? Colors.blue[300] : Colors.red[300],
@@ -110,17 +110,23 @@ class CourtScreenState extends State<CourtScreen> {
     num curLon = currentLocation["longitude"];
 
     List<Widget> displayList = [
-      new Text(this.results.toString() + " courts found" + " near you." + "\n",
-          textAlign: TextAlign.center,
-          style: new TextStyle(
-              fontFamily: 'Helvetica', fontWeight: FontWeight.bold)),
+      new Container(
+        margin: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
+        child: new Text(
+            this.results.toString() + " courts found" + " near you." + "\n",
+            textAlign: TextAlign.center,
+            style: new TextStyle(
+                fontFamily: 'Helvetica',
+                fontWeight: FontWeight.bold,
+                fontSize: 18.0)),
+      ),
       new RaisedButton(
         onPressed: () {
           Navigator.push(
             context,
             new MaterialPageRoute(
                 builder: (context) => new FilterScreen(
-                      userToken: _userToken,
+                      userUid: _userUid,
                     )),
           );
         },
@@ -145,7 +151,7 @@ class CourtScreenState extends State<CourtScreen> {
     return displayList;
   }
 
-  CourtScreenState(String location, this._userToken) {
+  CourtScreenState(String location, this._userUid) {
     this.location = location;
   }
 
@@ -165,6 +171,11 @@ class CourtScreenState extends State<CourtScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(body: new ListView(children: courtDisplayList));
+    return new Scaffold(
+        appBar: new AppBar(
+          title: new Text("Courts"),
+          backgroundColor: Colors.black,
+        ),
+        body: new ListView(children: courtDisplayList));
   }
 }
