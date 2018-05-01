@@ -30,8 +30,17 @@ describe('Cloud Functions', () => {
             region: "Champaign",
             name: "Some Court",
         };
+        const testData = {
+            data: {
+                latitude: "40",
+                longitude: "-90",
+                region: "Champaign",
+                name: "Some Court",
+            },
+            id: "test",
+        };
         before(() => {
-            doc = admin.firestore().collection('courts').doc();
+            doc = admin.firestore().collection('courts').doc('test');
             return doc.set(data);
         });
         after(()=> {
@@ -47,7 +56,7 @@ describe('Cloud Functions', () => {
             }
 
             return helpers.getNearbyCourts(query).then((result) => {
-                assert.deepInclude(result, data);
+                assert.deepInclude(result, testData);
                 return;
             });
         });
@@ -206,6 +215,7 @@ describe('Cloud Functions', () => {
         const testGameData = {
             creator: "someuser",
             court: "newcourt",
+            id: "newgame",
             participants: [],
             time: curDate.toISOString(),
         }

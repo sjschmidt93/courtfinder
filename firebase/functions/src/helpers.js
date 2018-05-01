@@ -15,13 +15,17 @@ export const helpers = (function() {
         const results = [];
         snapshot.forEach((doc) => {
             const data = doc.data();
+            const result = {
+                id: doc.id,
+                data: data,
+            }
             const curlat = data.latitude;
             const curlon = data.longitude;
             if (minlat < curlat &&
                 minlon < curlon &&
                 curlat < maxlat &&
                 curlon < maxlon)
-                results.push(data);
+                results.push(result);
         });
         return results;
     };
@@ -36,10 +40,13 @@ export const helpers = (function() {
     };
 
     const scheduleGame = async function(data) {
+        const userId = data.userId;
+        const participantsData = {};
+        participantsData[userId] = true;
         const docData = {
             court: data.courtId,
             creator: data.userId,
-            participants: {},
+            participants: participantsData,
             time: new Date(data.time)
         };
         const gameRef = admin.firestore().collection('games').doc();
@@ -78,6 +85,7 @@ export const helpers = (function() {
         results.forEach((doc) => {
             const docData = doc.data();
             const resultData = {
+                id: doc.id,
                 creator: docData['creator'],
                 participants: docData['participants'],
                 time: new Date(docData['time']).toISOString(),
@@ -93,7 +101,11 @@ export const helpers = (function() {
         const results = await courtsRef.get();
         const courtData = [];
         results.forEach((doc) => {
-            courtData.push(doc.data());
+            const resultData = {
+                id: doc.id,
+                data: doc.data(),
+            }
+            courtData.push(resultData);
         });
         return courtData;
     };
@@ -103,7 +115,15 @@ export const helpers = (function() {
         const results = await gamesRef.get();
         const gameData = [];
         results.forEach((doc) => {
-            gameData.push(doc.data());
+            const docData = doc.data();
+            const resultData = {
+                id: doc.id,
+                creator: docData['creator'],
+                participants: docData['participants'],
+                time: new Date(docData['time']).toISOString(),
+                court: docData['court'],
+            }
+            gameData.push(resultData);
         });
         return gameData;
     };
