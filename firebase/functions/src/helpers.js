@@ -76,7 +76,14 @@ export const helpers = (function() {
         const results = await courtRef.get();
         const gameData = [];
         results.forEach((doc) => {
-            gameData.push(doc.data());
+            const docData = doc.data();
+            const resultData = {
+                creator: docData['creator'],
+                participants: docData['participants'],
+                time: new Date(docData['time']).toISOString(),
+                court: docData['court'],
+            }
+            gameData.push(resultData);
         })
         return gameData;
     };

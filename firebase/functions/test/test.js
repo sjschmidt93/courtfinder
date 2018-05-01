@@ -196,11 +196,19 @@ describe('Cloud Functions', () => {
     describe('GetGamesForCourt', () => {
         let gameDoc;
         let courtDoc;
+        const curDate = new Date(Date.now());
         const gameData = {
+            creator: "someuser",
             court: "newcourt",
             participants: [],
-            time: Date.now(),
+            time: curDate,
         };
+        const testGameData = {
+            creator: "someuser",
+            court: "newcourt",
+            participants: [],
+            time: curDate.toISOString(),
+        }
         const courtData = {
             latitude: 20,
             longitude: 20,
@@ -224,7 +232,7 @@ describe('Cloud Functions', () => {
         it('should find games by court id', () => {
             const query = {courtId: "newcourt"};
             return helpers.getGamesForCourt(query).then((result) => {
-                assert.deepEqual(result[0], gameData);
+                assert.deepEqual(result[0], testGameData);
                 return;  
             });
         });
