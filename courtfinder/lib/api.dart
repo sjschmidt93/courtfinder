@@ -36,7 +36,7 @@ class ApiFunctions {
   }
 
   static Future<Map> scheduleGame(
-      String courtId, String userId, DateTime time) async {
+      String courtId, String userId, num time) async {
     Map<String, dynamic> data = {
       "userId": userId,
       "courtId": courtId,

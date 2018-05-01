@@ -35,15 +35,28 @@ class CourtInfoState extends State<CourtInfo> {
       new Image.network(staticMapUri.toString()),
     ];
     Iterable<Widget> gameTiles = gamesList.map((game) {
-      final time = game['time'];
+      final timeField = game['time'];
+      final DateTime time = DateTime.parse(timeField);
+      final int year = time.year;
+      final int month = time.month;
+      final int day = time.day;
+      final int hour = time.hour;
+      final int minute = time.minute;
       return new ListTile(
-        title: time,
+        title: new Text("$month-$day-$year, $hour:$minute"),
       );
     });
     tiles.addAll(gameTiles);
     return new ListView(
       children: tiles,
     );
+  }
+
+  _reloadGames() async {
+    final result = await ApiFunctions.getGamesForCourt(_courtId);
+    setState(() {
+      gamesList = result;
+    });
   }
 
   @override
@@ -55,20 +68,37 @@ class CourtInfoState extends State<CourtInfo> {
         height: 400,
         maptype: StaticMapViewType.roadmap);
     super.initState();
-    ApiFunctions.getGamesForCourt(_courtId).then((result) {
-      setState(() {
-        gamesList = result;
-      });
-    });
+    _reloadGames();
   }
 
   @override
   Widget build(BuildContext context) {
+    final DateTime curTime = new DateTime.now();
+
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("$_latitude, $_longitude"),
       ),
       body: _buildBodyListView(),
+      floatingActionButton: new FloatingActionButton(
+          child: new Icon(Icons.add),
+          onPressed: () => showDatePicker(
+                      context: context,
+                      initialDate: curTime,
+                      firstDate: curTime,
+                      lastDate: new DateTime.now().add(new Duration(days: 30)))
+                  .then((selectedDate) async {
+                final TimeOfDay selectedTime = await showTimePicker(
+                    context: context,
+                    initialTime: new TimeOfDay.fromDateTime(curTime));
+                final Duration dayTime = new Duration(
+                    hours: selectedTime.hour, minutes: selectedTime.minute);
+                final DateTime timeToSave = selectedDate.add(dayTime);
+                print(timeToSave);
+                await ApiFunctions.scheduleGame(
+                    _courtId, _userToken, timeToSave.millisecondsSinceEpoch);
+                _reloadGames();
+              })),
     );
   }
 }
