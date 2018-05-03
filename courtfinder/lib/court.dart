@@ -18,19 +18,23 @@ class Court {
 }
 
 class CourtScreen extends StatefulWidget {
+
+  // all parameters eventually passed to CourtScreen state, hence the underscores
   final String _userUid;
   final _location;
   int _results;
+  String _distanceFilter;
 
-  CourtScreen(this._location, this._results, this._userUid);
+  CourtScreen(this._location, this._results, this._userUid, this._distanceFilter);
 
   @override
   State<StatefulWidget> createState() =>
-      new CourtScreenState(_location, _userUid);
+      new CourtScreenState(_location, _userUid, _distanceFilter);
 }
 
 class CourtScreenState extends State<CourtScreen> {
   final String _userUid;
+  String distanceFilter;
   String location;
   int results;
   bool colorFlag = true;
@@ -109,11 +113,15 @@ class CourtScreenState extends State<CourtScreen> {
     num curLat = currentLocation["latitude"];
     num curLon = currentLocation["longitude"];
 
+    String headerText = "Courts found courts found" + " near you." + "\n";
+    if(distanceFilter != null)
+      headerText += "Filtering courts greater than " + distanceFilter.toString() + " miles away.";
+
     List<Widget> displayList = [
       new Container(
         margin: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
         child: new Text(
-            this.results.toString() + " courts found" + " near you." + "\n",
+            "$headerText",
             textAlign: TextAlign.center,
             style: new TextStyle(
                 fontFamily: 'Helvetica',
@@ -138,6 +146,8 @@ class CourtScreenState extends State<CourtScreen> {
       num courtLat = courtData['data']["latitude"];
       num courtLon = courtData['data']["longitude"];
       double distance = _calculateDistance(curLon, curLat, courtLon, courtLat);
+      if(distanceFilter != null && distance / 1000.0 > double.parse(distanceFilter))
+        return null;
       return _getCourtDisplay(new Court(
           'images/ruckerpark.jpg',
           courtData['data']['name'],
@@ -147,13 +157,14 @@ class CourtScreenState extends State<CourtScreen> {
           courtLon,
           courtData['id']));
     });
-    displayList.addAll(courtDisplays);
+    for(var court in courtDisplays){
+      if(court != null)
+        displayList.add(court);
+    }
     return displayList;
   }
 
-  CourtScreenState(String location, this._userUid) {
-    this.location = location;
-  }
+  CourtScreenState(String location, this._userUid, this.distanceFilter) ;
 
   @override
   void initState() {

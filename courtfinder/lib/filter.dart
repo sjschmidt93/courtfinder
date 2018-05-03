@@ -136,7 +136,7 @@ class FilterScreenState extends State<FilterScreen> {
                       context,
                       new MaterialPageRoute(
                           builder: (context) =>
-                              new CourtScreen('New York', 3, userToken)),
+                              new CourtScreen('New York', 3, userToken, radius.toString())),
                     );
                   },
                   child: new Text('Save your changes'),
@@ -148,7 +148,7 @@ class FilterScreenState extends State<FilterScreen> {
                       context,
                       new MaterialPageRoute(
                           builder: (context) =>
-                              new CourtScreen('New York', 3, userToken)),
+                              new CourtScreen('New York', 3, userToken, null)),
                     );
                   },
                   child: new Text('Cancel'),

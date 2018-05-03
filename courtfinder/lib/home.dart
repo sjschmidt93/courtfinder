@@ -160,7 +160,7 @@ class HomeScreenState extends State<HomeScreen> {
                                   context,
                                   new MaterialPageRoute(
                                       builder: (context) => new CourtScreen(
-                                          'New York', 3, useruid)),
+                                          'New York', 3, useruid, null)),
                                 );
                               });
                             },
