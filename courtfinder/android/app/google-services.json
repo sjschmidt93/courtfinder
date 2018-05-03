@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "1084763604193-20eqnhhnhr40t2b84l7ln51rh0aaibla.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.courtfinder",
+            "certificate_hash": "6f312f42fcac3994f67e9d5fb6bd7f130d638911"
+          }
+        },
+        {
+          "client_id": "1084763604193-6et8gngnj7jj2ncao6irqlma0a6c75gv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.courtfinder",
+            "certificate_hash": "1c8babe2a56861225c4fbcc82c48a52a6496615e"
+          }
+        },
+        {
           "client_id": "1084763604193-bf895t0ubhihtn16s4c1ln8920c9gr5e.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

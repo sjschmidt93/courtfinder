@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:courtfinder/api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'settings.dart';
 import 'court.dart';
 import 'loc.dart';
+import 'profile.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -20,6 +20,7 @@ class HomeScreenState extends State<HomeScreen> {
   String useruid;
   String userEmail;
   String userName;
+  String photoUrl;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextStyle infoStyle = new TextStyle(
     fontSize: 24.0,
@@ -42,17 +43,20 @@ class HomeScreenState extends State<HomeScreen> {
       String uid = user.uid;
       String email = user.email;
       String name = user.displayName;
+      String photo = user.photoUrl;
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       await prefs.setString("firebaseUid", uid);
       await prefs.setString("firebaseEmail", email);
       await prefs.setString("firebaseName", name);
+      await prefs.setString("firebasePhoto", photo);
 
       print("Login Successful: $uid");
       setState(() {
         useruid = uid;
         userEmail = email;
         userName = name;
+        photoUrl = photo;
       });
     } catch (error) {
       print(error);
@@ -65,6 +69,7 @@ class HomeScreenState extends State<HomeScreen> {
       useruid = prefs.get("firebaseUid");
       userEmail = prefs.get("firebaseEmail");
       userName = prefs.get("firebaseName");
+      photoUrl = prefs.get("firebasePhoto");
     });
   }
 
@@ -74,11 +79,13 @@ class HomeScreenState extends State<HomeScreen> {
     await prefs.remove("firebaseUid");
     await prefs.remove("firebaseEmail");
     await prefs.remove("firebaseName");
+    await prefs.remove("firebasePhoto");
     print("Logging out");
     setState(() {
       useruid = null;
       userName = null;
       userEmail = null;
+      photoUrl = null;
     });
   }
 
@@ -177,6 +184,16 @@ class HomeScreenState extends State<HomeScreen> {
                             },
                             child: new Text('Settings'),
                           ),
+                          new RaisedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) => new ProfileScreen(useruid, userEmail, userName, photoUrl)),
+                              );
+                            },
+                            child: new Text('Profile'),
+                          ),                          
                           new RaisedButton(
                             onPressed: () => logout(),
                             child: new Text("Logout"),
