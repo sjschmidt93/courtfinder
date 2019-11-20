@@ -1,8 +1,10 @@
 # Court Finder
-A basketball court finder and game coordinator app
+Basketball court finder and game coordinator app
 
 Basketball courts are discovered using machine learning
 
 Games can be coordinated at these courts through the app
 
-Very, very unfinished.
+A project for CS 242 at UIUC
+
+Very, very unfinished
